@@ -1,9 +1,10 @@
 {
-	"name": "nouha",
-	"description": "Images sharing platform",
-	"version": "0.0.1",
-	"private": true,
-	"dependencies": {
-
-	}
+  "name": "nouha",
+  "description": "Images sharing platform",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "express": "^4.13.3"
+  }
 }
