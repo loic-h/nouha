@@ -3,8 +3,15 @@
   "description": "Images sharing platform",
   "version": "0.0.1",
   "private": true,
-  "dependencies": {},
-  "devDependencies": {
-    "express": "^4.13.3"
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "babel": "^5.8.23",
+    "express": "^4.13.3",
+    "mongoose": "^4.1.7",
+    "passport": "^0.3.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^2.0.0"
   }
 }
