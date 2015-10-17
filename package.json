@@ -23,6 +23,6 @@
 	},
 	"devDependencies": {
 		"gulp": "^3.9.0",
-		"js-utils": "git+https://github.com/loic-h/js-utils.git"
+		"@loiic/js-utils": ""
 	}
 }
