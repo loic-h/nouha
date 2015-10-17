@@ -3,11 +3,11 @@ import passportLocalMongoose from 'passport-local-mongoose';
 
 let Schema = mongoose.Schema;
 
-let Account = new Schema({
-	username: String,
+let User = new Schema({
+	email: String,
 	password: String
 });
 
-Account.plugin(passportLocalMongoose);
+// TODO hashing w/ crypto
 
-export default mongoose.model('accounts', Account);
+export default mongoose.model('users', User);

@@ -1,0 +1,28 @@
+extends ../layout.jade
+
+block content
+	form(
+		method='post'
+	)
+		input(
+			type='email'
+			name='email'
+			placeholder='Email'
+			value= email || ''
+		)
+		if errors && errors.email
+			span.error #{errors.email}
+		input(
+			type='password'
+			name='pass'
+			placeholder='Password'
+			value= pass || ''
+		)
+		if errors && errors.pass
+			span.error #{errors.pass}
+		button(
+			type='submit'
+		) Go
+		if errors && errors.main
+			span.error #{errors.main}
+
