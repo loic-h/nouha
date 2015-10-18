@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+#cd "$(dirname $0)/.."
+
+echo "Update submodules"
+git submodule update --init --recursive
+echo "Install npm packages"
+npm install
+echo "Install subomdules' npm packages"
+git submodule foreach --recursive npm install
+echo "Flatten npm dependecies";
+npm dedupe
+echo "Done";
