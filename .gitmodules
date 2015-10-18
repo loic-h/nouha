@@ -1,3 +1,6 @@
 [submodule "node_modules/@loiic/js-utils"]
 	path = node_modules/@loiic/js-utils
 	url = git@github.com:loic-h/js-utils.git
+[submodule "node_modules/@loiic/sass_utils"]
+	path = node_modules/@loiic/sass_utils
+	url = git@github.com:loic-h/sass-utils.git
