@@ -15,7 +15,7 @@ app.set('view engine', 'jade');
 
 mongoose.connect('mongodb://localhost/nouha');
 
-app.use(express.static(path.join(__dirname, '/../assets')));
+app.use(express.static(path.join(__dirname, '/../assets/dist')));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
