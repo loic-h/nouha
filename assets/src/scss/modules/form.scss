@@ -1,0 +1,63 @@
+.form {
+
+	&.-login {
+		@include center(both);
+		background: $white;
+		max-width: 15em;
+		width: 100%;
+	}
+
+	._header {
+		background: $black;
+		color: $white;
+		padding: $base;
+	}
+
+	._content {
+		padding: $base;
+	}
+
+	._input {
+
+		&.-text,
+		&.-submit {
+			display: inline-block;
+			width: 100%;
+
+			input {
+				width: 100%;
+				padding: $base/2;
+				box-sizing: border-box;
+				@include ease;
+			}
+		}
+
+		&.-text {
+			margin-bottom: $base/2;
+
+			input {
+				color: $grey;
+				border: 1px solid $greyLight;
+
+				&:hover, &:focus {
+					border-color: $grey;
+				}
+			}
+		}
+
+		&.-submit {
+			margin-top: $base/2;
+			overflow: auto;
+
+			input {
+				background: $green;
+				color: $white;
+				cursor: pointer;
+
+				&:hover, &:focus {
+					background: $greenDark;
+				}
+			}
+		}
+	}
+}

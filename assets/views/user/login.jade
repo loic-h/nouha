@@ -1,28 +1,37 @@
 extends ../layout.jade
 
 block content
-	form(
-		method='post'
-	)
-		input(
-			type='email'
-			name='email'
-			placeholder='Email'
-			value= email || ''
-		)
-		if errors && errors.email
-			span.error #{errors.email}
-		input(
-			type='password'
-			name='pass'
-			placeholder='Password'
-			value= pass || ''
-		)
-		if errors && errors.pass
-			span.error #{errors.pass}
-		button(
-			type='submit'
-		) Go
-		if errors && errors.main
-			span.error #{errors.main}
+	div.form.-login
+		div._header
+			h4 Identifiez-vous
+		div._content
+			form(
+				method='post'
+			)
+				div._input.-text.input
+					input(
+						type='email'
+						name='email'
+						placeholder='E-mail'
+						value= email || ''
+						autofocus
+					)
+					if errors && errors.email
+						span.error #{errors.email}
+				div._input.-text.input
+					input(
+						type='password'
+						name='pass'
+						placeholder='Mot de passe'
+						value= pass || ''
+					)
+					if errors && errors.pass
+						span.error #{errors.pass}
+				div._input.-submit.input
+					input(
+						type='submit'
+						value='Go'
+					)
+					if errors && errors.main
+						span.error #{errors.main}
 
