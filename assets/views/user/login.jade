@@ -7,6 +7,7 @@ block content
 		div._content
 			form(
 				method='post'
+				novalidate
 			)
 				div._input.-text.input
 					input(
@@ -16,22 +17,18 @@ block content
 						value= email || ''
 						autofocus
 					)
-					if errors && errors.email
-						span.error #{errors.email}
 				div._input.-text.input
 					input(
 						type='password'
-						name='pass'
+						name='password'
 						placeholder='Mot de passe'
-						value= pass || ''
+						value= password || ''
 					)
-					if errors && errors.pass
-						span.error #{errors.pass}
 				div._input.-submit.input
 					input(
 						type='submit'
 						value='Go'
 					)
-					if errors && errors.main
-						span.error #{errors.main}
+					if error
+						p.error #{error}
 

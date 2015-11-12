@@ -60,4 +60,10 @@
 			}
 		}
 	}
+
+	.error {
+		margin-top: $base;
+		margin-bottom: 0;
+		color: $red;
+	}
 }

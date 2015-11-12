@@ -9,5 +9,9 @@ let User = new Schema({
 });
 
 // TODO hashing w/ crypto
+User.methods.validPassword = function(password) {
+	return password;
+};
+
 
 export default mongoose.model('users', User);

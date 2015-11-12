@@ -7,14 +7,22 @@ import LocalStrategy from 'passport-local';
 let app = express();
 let router = express.Router();
 
-router.get('/login', function (req, res) {
-	res.render('user/login', {email: 'test@test.com', pass: '1234'});
+router.get('/login', function (req, res, message) {
+	let error =  req.flash('error');
+	error = error.length > 0 ? error : null;
+	res.render('user/login', {error: error, email: 'loic.hamet@gmail.com', password: '1234'});
 });
 
 router.post('/login', passport.authenticate('local-login', {
 	successRedirect: '/',
-	failureRedirect: '/user/login'
+	failureRedirect: '/user/login',
+	failureFlash : true
 }));
+
+router.get('/logout', function (req, res) {
+	req.logout();
+	res.redirect('/user/login');
+});
 
 router.get('/add', function (req, res) {
 	res.render('user/add');

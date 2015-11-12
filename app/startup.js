@@ -7,7 +7,7 @@ import userRoutes from './routes/user';
 import path from 'path';
 import mongoose from 'mongoose';
 import passport from 'passport';
-import './config/passport';
+import flash from 'connect-flash';
 
 let app = express();
 app.set('views', path.join(__dirname,'../assets/views'));
@@ -17,7 +17,7 @@ mongoose.connect('mongodb://localhost/nouha');
 
 app.use(express.static(path.join(__dirname, '/../assets/dist')));
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use( bodyParser.urlencoded({ extended: true }) );
 app.use(session({
 	secret: 'keyboard cat',
 	resave: false,
@@ -29,5 +29,7 @@ app.use(flash());
 
 app.use('/', routes);
 app.use('/user', userRoutes);
+import './config/passport';
 
 app.listen(process.env.PORT || 8080);
+
