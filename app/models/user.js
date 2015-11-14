@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import passportLocalMongoose from 'passport-local-mongoose';
 import crypto from 'crypto';
 import config from '../config';
+import validator from 'validator';
 
 let Schema = mongoose.Schema;
 
@@ -13,40 +14,58 @@ let UserSchema = new Schema({
 	email: String,
 	hash: String,
 	salt: String,
-	permission: {
-		type: String,
-		validate: function(permission) {
-			return config.permissions.indexOf(permission) > 0;
-		}
-	},
+	permission: String,
 	created: {
 		type: Date,
 		default: Date.now
 	}
 });
 
-UserSchema.virtual('password').set(function(password) {
-
+UserSchema.pre('save', function(next) {
+	this.password = this.createPassword();
+	this.salt = this.createSalt();
+	this.hash = this.hashPassword(password);
+	next();
 });
 
-UserSchema.pre('save', function(next) {
-	if(this.password) {
-		this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
-		this.hashPassword(this.password);
-	}
-})
+UserSchema.path('email').validate(function(email, fn) {
+	fn(!!email.length);
+}, 'L\'email est obligatoire');
 
-UserSchema.methods.hashPassword = function(password) {
-	crypto.pbkdf2('secret', this.salt, 4096, 64, 'sha256', function(err, key) {
-		if (err)
-			throw err;
-		return key.toString('hex');
-	});
+UserSchema.path('email').validate(function(email, fn) {
+	fn(validator.isEmail(email));
+}, 'L\'adresse amil n\'est pas valide');
+
+
+
+UserSchema.methods = {
+	hashPassword: function(password) {
+		return crypto.pbkdf2Sync(password, this.salt, 10000, 64).toString('base64');
+	},
+
+	validPassword: function(password) {
+		return password;
+	},
+
+	createSalt: function() {
+		return crypto.randomBytes(16).toString('base64');
+	},
+
+	createPassword: function(length = 6) {
+		return crypto.randomBytes(Math.ceil(length/2))
+			.toString('hex')
+			.slice(0,length);
+	}
+
+};
+
+function notEmpty(str) {
+	return !!str.length;
 }
 
-UserSchema.methods.validPassword = function(password) {
-	return password;
-};
+function isEmail(str) {
+	return validator.isEmail(str);
+}
 
 
 export default mongoose.model('users', UserSchema);

@@ -1,3 +1,6 @@
 export default {
-	permissions: ['admin', 'user']
+	permissions: {
+		'user': 'Utilisateur',
+		'admin': 'Administrateur'
+	}
 }

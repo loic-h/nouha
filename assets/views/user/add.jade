@@ -1,28 +1,47 @@
 extends ../layout.jade
 
 block content
-	form(
-		method='post'
-	)
-		input(
-			type='email'
-			name='email'
-			placeholder='Email'
-			value= email || ''
-		)
-		if errors && errors.email
-			span.error #{errors.email}
-		input(
-			type='password'
-			name='pass'
-			placeholder='Password'
-			value= pass || ''
-		)
-		if errors && errors.pass
-			span.error #{errors.pass}
-		button(
-			type='submit'
-		) Go
-		if errors && errors.main
-			span.error #{errors.main}
+	div.form.-add
+		div._header
+			h4 Ajouter un utilisateur
+		div._content
+			form(
+				method='post'
+				novalidate
+			)
+				div._input.-text.input
+					input(
+						type='text'
+						name='name'
+						placeholder='Nom'
+						value= name || ''
+						autofocus
+					)
+				div._input.-text.input
+					input(
+						type='email'
+						name='email'
+						placeholder='E-mail'
+						value= email || ''
+					)
+				div._input.-select.input
+					select(
+						name='permission'
+						placeholder='E-mail'
+					)
+						each val, key in permissions
+							option(
+								name=key
+							) #{val}
+				div._input.-submit.input
+					input(
+						type='submit'
+						value='Go'
+					)
+					if error
+						p.error
+							each val in error
+								=val
+					if message
+						p.message #{message}
 

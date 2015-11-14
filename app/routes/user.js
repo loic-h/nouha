@@ -1,8 +1,8 @@
 import express from 'express';
 import User from '../models/user';
-import validator from 'validator';
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
+import config from '../config';
 
 let app = express();
 let router = express.Router();
@@ -25,37 +25,38 @@ router.get('/logout', function (req, res) {
 });
 
 router.get('/add', function (req, res) {
-	res.render('user/add');
+	res.render('user/add', {
+		permissions: config.permissions,
+		error: req.flash('error'),
+		message: req.flash('message')
+	});
 });
 
 router.post('/add', function (req, res) {
-	let email = req.body.email;
-	let pass = req.body.pass;
-	let errors = {};
+	let data = {
+		name: req.body.name,
+		email: req.body.email,
+		permission: req.body.permission,
+		permissions: config.permissions
+	};
 
-	if(pass === '') {
-		errors.pass = 'Password is mandatory';
-	}
-	if(!validator.isEmail(email)) {
-		errors.email = 'Email is invalid';
-	}
-	if(email === '') {
-		errors.email = 'Email is mandatory';
-	}
-
-	if(Object.keys(errors).length > 0) {
-		res.render('user/add', {email: email, pass: pass, errors: errors});
-	}
-	else {
-		let user = new User({email: email, password: pass});
-		user.save(function(err) {
-			if (err) {
-				return res.render('user/add', {email: email, pass: pass, errors: {'main': err}});
+	let user = new User(data);
+	user.save(function(ret) {
+		if (ret) {
+			data.error = [];
+			let errors = ret.errors;
+			for(let err in errors) {
+				if(errors.hasOwnProperty(err)) {
+					data.error.push(errors[err].message);
+				}
 			}
-
-			return res.render('user/add', {});
-		});
-	}
+			return res.render('user/add', data);
+		} else {
+			sendMail(data.email, data.name);
+			req.flash('message', 'L\'utilisateur a été enregistré');
+			return res.redirect('/user/add');
+		}
+	});
 });
 
 
