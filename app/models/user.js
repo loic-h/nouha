@@ -24,7 +24,7 @@ let UserSchema = new Schema({
 UserSchema.pre('save', function(next) {
 	this.password = this.createPassword();
 	this.salt = this.createSalt();
-	this.hash = this.hashPassword(password);
+	this.hash = this.hashPassword(this.password);
 	next();
 });
 
@@ -34,7 +34,13 @@ UserSchema.path('email').validate(function(email, fn) {
 
 UserSchema.path('email').validate(function(email, fn) {
 	fn(validator.isEmail(email));
-}, 'L\'adresse amil n\'est pas valide');
+}, 'L\'adresse email n\'est pas valide');
+
+UserSchema.path('email').validate(function(email, fn) {
+	mongoose.models["users"].findOne({username : email},function(err, user) {
+		fn(user || err);
+	});
+}, 'Cette adresse email est déjà utilisée');
 
 
 
