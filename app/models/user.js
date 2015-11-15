@@ -1,6 +1,3 @@
-// https://github.com/madhums/node-express-mongoose-demo/blob/master/app/models/user.js
-// https://masteringmean.com/lessons/197-Managing-User-Authentication-Using-Passport
-
 import mongoose from 'mongoose';
 import passportLocalMongoose from 'passport-local-mongoose';
 import crypto from 'crypto';
