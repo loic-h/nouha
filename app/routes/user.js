@@ -6,6 +6,7 @@ import config from '../config';
 import nodemailer from 'nodemailer';
 import path from 'path';
 import jade from 'jade';
+import {ensureAuthenticated} from '../auth';
 
 let app = express();
 let router = express.Router();
@@ -24,12 +25,12 @@ router.post('/login', passport.authenticate('local-login', {
 	failureFlash : true
 }));
 
-router.get('/logout', function (req, res) {
+router.get('/logout', ensureAuthenticated, function (req, res) {
 	req.logout();
 	res.redirect('/user/login');
 });
 
-router.get('/add', function (req, res) {
+router.get('/add', ensureAuthenticated, function (req, res) {
 	res.render('user/add', {
 		permissions: config.permissions,
 		error: req.flash('error'),
@@ -37,7 +38,7 @@ router.get('/add', function (req, res) {
 	});
 });
 
-router.post('/add', function (req, res) {
+router.post('/add', ensureAuthenticated, function (req, res) {
 	let data = {
 		name: req.body.name,
 		email: req.body.email,
