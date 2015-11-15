@@ -3,6 +3,7 @@ export function ensureAuthenticated(req, res, next) {
 		return next();
 	}
 	else {
+		req.session.url = req.originalUrl;
 		res.redirect('/user/login');
 	}
 }

@@ -1,0 +1,41 @@
+extends ../layout.jade
+
+block content
+	div.form.-user
+		div._header
+			h4 Bonjour, #{name}
+		div._content
+			form(
+				method='post'
+				novalidate
+			)
+				div._input.-text.input
+					input(
+						type='text'
+						name='name'
+						placeholder='Nom'
+						value= name || ''
+					)
+				div._input.-text.input
+					input(
+						type='email'
+						name='email'
+						placeholder='E-mail'
+						value= email
+						readonly
+					)
+				div._input.-text.input
+					input(
+						type='password'
+						name='password'
+						placeholder='Mot de passe'
+					)
+				div._input.-submit.input
+					input(
+						type='submit'
+						value='Modifier mes informations'
+					)
+					if error
+						p.error #{error}
+					if message
+						p.message #{message}

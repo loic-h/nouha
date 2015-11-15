@@ -13,22 +13,68 @@ let router = express.Router();
 let transport = nodemailer.createTransport();
 let tplEmailAddUser = jade.compileFile(path.join(__dirname, '../../assets/views/email/add-user.jade'));
 
-router.get('/login', function (req, res, message) {
+
+router.get('/', ensureAuthenticated, function (req, res) {
+	let user = req.user;
+	res.render('user', {name: user.name, email: user.email});
+});
+
+router.post('/', ensureAuthenticated, function (req, res) {
+	let data = {
+		name: req.body.name
+	};
+	if(req.body.password !== '') {
+		data.hash = req.user.hashPassword(req.body.password);
+	}
+	req.user.update(data, function(err) {
+		let data = {
+			name: req.user.name,
+			email: req.user.email
+		};
+		if(err) {
+			data.error = [];
+			let errors = err.errors;
+			for(let err in errors) {
+				if(errors.hasOwnProperty(err)) {
+					data.error.push(errors[err].message);
+				}
+			}
+		}
+		else {
+			data.message = 'Vos informations ont été modifiées';
+		}
+		res.render('user', data);
+	});
+});
+
+
+router.get('/login', function (req, res) {
 	let error =  req.flash('error');
 	error = error.length > 0 ? error : null;
 	res.render('user/login', {error: error, email: 'loic.hamet@gmail.com', password: '1234'});
 });
 
 router.post('/login', passport.authenticate('local-login', {
-	successRedirect: '/',
 	failureRedirect: '/user/login',
 	failureFlash : true
-}));
+}), function (req, res) {
+	let url;
+	if(req.session.url) {
+		url = req.session.url;
+		delete req.session.url;
+	}
+	else {
+		url = '/';
+	}
+	res.redirect(url);
+});
+
 
 router.get('/logout', ensureAuthenticated, function (req, res) {
 	req.logout();
 	res.redirect('/user/login');
 });
+
 
 router.get('/add', ensureAuthenticated, function (req, res) {
 	res.render('user/add', {
@@ -47,10 +93,10 @@ router.post('/add', ensureAuthenticated, function (req, res) {
 	};
 
 	let user = new User(data);
-	user.save(function(ret) {
-		if (ret) {
+	user.save(function(err) {
+		if (err) {
 			data.error = [];
-			let errors = ret.errors;
+			let errors = err.errors;
 			for(let err in errors) {
 				if(errors.hasOwnProperty(err)) {
 					data.error.push(errors[err].message);
@@ -76,7 +122,6 @@ router.post('/add', ensureAuthenticated, function (req, res) {
 });
 
 function sendMail (data, fn) {
-	console.log('sendMail', data);
 	transport.sendMail({
 		from: config.emailAdmin,
 		to: data.email,

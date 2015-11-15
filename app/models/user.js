@@ -26,6 +26,10 @@ UserSchema.pre('save', function(next) {
 	next();
 });
 
+UserSchema.post('save', function() {
+	console.log(arguments);
+});
+
 UserSchema.path('email').validate(function(email, fn) {
 	fn(!!email.length);
 }, 'L\'email est obligatoire');
@@ -44,6 +48,9 @@ UserSchema.path('email').validate(function(email, fn) {
 
 UserSchema.methods = {
 	hashPassword: function(password) {
+		if(!this.salt || this.salt == '') {
+			this.salt = this.createSalt();
+		}
 		return crypto.pbkdf2Sync(password, this.salt, 10000, 64).toString('base64');
 	},
 
