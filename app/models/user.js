@@ -22,6 +22,7 @@ UserSchema.pre('save', function(next) {
 	this.password = this.createPassword();
 	this.salt = this.createSalt();
 	this.hash = this.hashPassword(this.password);
+	this.permission = Object.keys(config.permissions).filter(key => config.permissions[key] === this.permission);
 	next();
 });
 
