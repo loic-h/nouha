@@ -37,8 +37,8 @@ UserSchema.path('email').validate(function(email, fn) {
 }, 'L\'adresse email n\'est pas valide');
 
 UserSchema.path('email').validate(function(email, fn) {
-	mongoose.models["users"].findOne({username : email},function(err, user) {
-		fn(user || err);
+	mongoose.models["users"].findOne({email : email},function(err, user) {
+		fn(!(user || err));
 	});
 }, 'Cette adresse email est déjà utilisée');
 
