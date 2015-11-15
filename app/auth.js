@@ -3,6 +3,6 @@ export function ensureAuthenticated(req, res, next) {
 		return next();
 	}
 	else {
-		res.redirect('user/login');
+		res.redirect('/user/login');
 	}
 }
