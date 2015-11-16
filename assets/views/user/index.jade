@@ -35,7 +35,9 @@ block content
 						type='submit'
 						value='Modifier mes informations'
 					)
-					if error
-						p.error #{error}
-					if message
-						p.message #{message}
+				if error
+					p.error
+						each val in error
+							=val
+				if message
+					p.message #{message}

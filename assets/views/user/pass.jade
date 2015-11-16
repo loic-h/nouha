@@ -1,9 +1,9 @@
 extends ../layout.jade
 
 block content
-	div.form.-login
+	div.form.-pass
 		div._header
-			h4 Identifiez-vous
+			h4 Mot de passe oublié
 		div._content
 			form(
 				method='post'
@@ -17,13 +17,6 @@ block content
 						value= email || ''
 						autofocus
 					)
-				div._input.-text.input
-					input(
-						type='password'
-						name='password'
-						placeholder='Mot de passe'
-						value= password || ''
-					)
 				div._input.-submit.input
 					input(
 						type='submit'
@@ -31,6 +24,3 @@ block content
 					)
 				if error
 					p.error #{error}
-				p
-					a(href="/user/pass") Mot de passe oublié
-

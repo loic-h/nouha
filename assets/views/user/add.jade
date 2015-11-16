@@ -38,10 +38,10 @@ block content
 						type='submit'
 						value='Go'
 					)
-					if error
-						p.error
-							each val in error
-								=val
-					if message
-						p.message #{message}
+				if error
+					p.error
+						each val in error
+							=val
+				if message
+					p.message #{message}
 

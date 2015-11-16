@@ -121,6 +121,11 @@ router.post('/add', ensureAuthenticated, function (req, res) {
 	});
 });
 
+
+router.get('/pass', function (req, res) {
+	res.render('user/pass');
+})
+
 function sendMail (data, fn) {
 	transport.sendMail({
 		from: config.emailAdmin,
