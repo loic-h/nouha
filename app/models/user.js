@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import passportLocalMongoose from 'passport-local-mongoose';
 import crypto from 'crypto';
 import config from '../config';
-import validator from 'validator';
+import helpers from '../helpers';
 
 let Schema = mongoose.Schema;
 
@@ -26,16 +26,12 @@ UserSchema.pre('save', function(next) {
 	next();
 });
 
-UserSchema.post('save', function() {
-	console.log(arguments);
-});
-
 UserSchema.path('email').validate(function(email, fn) {
 	fn(!!email.length);
 }, 'L\'email est obligatoire');
 
 UserSchema.path('email').validate(function(email, fn) {
-	fn(validator.isEmail(email));
+	fn(helpers.isEmail(email));
 }, 'L\'adresse email n\'est pas valide');
 
 UserSchema.path('email').validate(function(email, fn) {
@@ -66,17 +62,15 @@ UserSchema.methods = {
 		return crypto.randomBytes(Math.ceil(length/2))
 			.toString('hex')
 			.slice(0,length);
+	},
+
+	changePassword: function(next) {
+		let password = this.createPassword();
+		let hash = this.hashPassword(password);
+		this.update({hash: hash}, err => next(err, this, password));
 	}
 
 };
-
-function notEmpty(str) {
-	return !!str.length;
-}
-
-function isEmail(str) {
-	return validator.isEmail(str);
-}
 
 
 export default mongoose.model('users', UserSchema);

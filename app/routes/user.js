@@ -3,15 +3,13 @@ import User from '../models/user';
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
 import config from '../config';
-import nodemailer from 'nodemailer';
 import path from 'path';
-import jade from 'jade';
+import emailer from '../helpers/emailer';
 import {ensureAuthenticated} from '../auth';
+import {createPassword} from '../helpers';
 
 let app = express();
 let router = express.Router();
-let transport = nodemailer.createTransport();
-let tplEmailAddUser = jade.compileFile(path.join(__dirname, '../../assets/views/email/add-user.jade'));
 
 
 router.get('/', ensureAuthenticated, function (req, res) {
@@ -105,7 +103,11 @@ router.post('/add', ensureAuthenticated, function (req, res) {
 			return res.render('user/add', data);
 		} else {
 			data.password = user.password;
-			sendMail(data, function (error, info) {
+			emailer.send({
+				tpl: 'add-user',
+				to: data.email,
+				data: data
+			}, function (error, info) {
 				if(error) {
 					data.error = 'Une erreur est survenue. Merci de vérifier l\'email renseigné';
 					console.log(error);
@@ -123,17 +125,54 @@ router.post('/add', ensureAuthenticated, function (req, res) {
 
 
 router.get('/pass', function (req, res) {
-	res.render('user/pass');
-})
+	res.render('user/pass', {
+		error: req.flash('error'),
+		message: req.flash('message')
+	});
+});
 
-function sendMail (data, fn) {
-	transport.sendMail({
-		from: config.emailAdmin,
-		to: data.email,
-		subject: 'Bienvenue sur Nouha',
-		html: tplEmailAddUser(data)
-	}, fn);
-}
+router.post('/pass', function(req, res) {
+	let email = req.body.email;
+	if(email === '') {
+		req.flash('error', 'Le champ email est vide.');
+		return res.redirect('/user/pass');
+	}
+	User.findOne({ email: email }, function (err, user) {
+		if (err) {
+			return done(err);
+		}
+		if (!user) {
+			req.flash('error', 'L\'email est inconnu');
+			return res.redirect('/user/pass');
+		}
+		user.changePassword(function (err, user, password) {
+			if(err) {
+				console.log(err);
+				req.flash('error', 'Une erreur est survenue pendant la modification de l\'utilisateur');
+			}
+			else {
+				emailer.send({
+					tpl: 'change-password',
+					to: user.email,
+					data: {
+						name: user.name,
+						password: password
+					}
+				}, function (err, info) {
+					if(err) {
+						console.log(err);
+						req.flash('error', 'Une erreur est survenue pendant l\'envoi du message.');
+					}
+					else {
+						req.flash('message', 'Le nouveau mot de passe a été envoyé par mail.');
+					}
+					return res.redirect('/user/pass');
+				});
+			}
+		});
+	});
+});
+
 
 
 export default router;
