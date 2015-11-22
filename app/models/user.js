@@ -66,6 +66,7 @@ UserSchema.methods = {
 
 	changePassword: function(next) {
 		let password = this.createPassword();
+		console.log(password);
 		let hash = this.hashPassword(password);
 		this.update({hash: hash}, err => next(err, this, password));
 	}
