@@ -49,7 +49,7 @@ router.post('/', ensureAuthenticated, function (req, res) {
 router.get('/login', function (req, res) {
 	let error =  req.flash('error');
 	error = error.length > 0 ? error : null;
-	res.render('user/login', {error: error, email: 'loic.hamet@gmail.com', password: '1234'});
+	res.render('user/login');
 });
 
 router.post('/login', passport.authenticate('local-login', {
