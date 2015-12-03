@@ -1,1 +1,3 @@
-console.log('app');
+import 'dom4';
+
+import './modules/upload';

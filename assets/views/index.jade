@@ -2,3 +2,17 @@ extends ./layout.jade
 
 block content
 	h1 index
+	div#upload
+		form(
+			action="/upload"
+			method="/post"
+			enctype="multipart/form-data"
+		)
+			input(
+				type="file"
+				multiple="multiple"
+			)
+			input(
+				type="submit"
+				value="go"
+			)

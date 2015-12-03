@@ -1,0 +1,16 @@
+#upload {
+
+	.dropzone {
+		width: 120px;
+		height: 120px;
+		position: relative;
+		border: 3px dashed $black;
+		color: $black;
+		border-radius: 1em;
+		text-align: center;
+
+		h2 {
+			@include center(both);
+		}
+	}
+}
