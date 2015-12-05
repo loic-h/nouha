@@ -1,14 +1,15 @@
 import './request';
+import template from './template';
 
-let container;
+let container = document.query('.upload');
+let containerGallery = document.query('.gallery');
 let fileInput;
 
-if (window.File && window.FileReader && window.FileList && window.Blob) {
+if (container && window.File && window.FileReader && window.FileList && window.Blob) {
 	init();
 }
 
 function init() {
-	container = document.getElementById('upload');
 	fileInput = document.query('input[type=file]');
 
 	fileInput.addEventListener('change', onChange);
@@ -27,11 +28,8 @@ function parseFile(file) {
 	let reader = new FileReader();
 
 	reader.onloadend = () => {
-		console.log('yo');
-		let img = document.createElement('img');
-		img.src = reader.result;
-		container.appendChild(img);
-		console.log(img);
+		let img = template.node('thumb', {src: reader.result, title: 'prout'});
+		containerGallery.appendChild(img);
 	};
 
 	reader.readAsDataURL(file);
