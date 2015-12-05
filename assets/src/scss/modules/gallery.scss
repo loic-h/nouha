@@ -1,0 +1,16 @@
+.gallery {
+
+	.thumb {
+		height: 12em;
+
+		figure {
+			height: 100%;
+
+			img {
+				display: block;
+				height: 100%;
+				width: auto;
+			}
+		}
+	}
+}
