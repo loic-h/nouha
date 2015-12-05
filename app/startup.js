@@ -8,14 +8,15 @@ import path from 'path';
 import mongoose from 'mongoose';
 import passport from 'passport';
 import flash from 'connect-flash';
+import config from './config';
 
 let app = express();
-app.set('views', path.join(__dirname,'../assets/views'));
+app.set('views', config.path.views);
 app.set('view engine', 'jade');
 
 mongoose.connect('mongodb://localhost/nouha');
 
-app.use(express.static(path.join(__dirname, '/../assets/dist')));
+app.use(express.static(config.path.dist));
 app.use(cookieParser());
 app.use( bodyParser.urlencoded({ extended: true }) );
 app.use(session({
