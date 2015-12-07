@@ -1,27 +1,27 @@
-function ajax(method, url, args) {
+function ajax(method, url, data) {
 
 	const promise = new Promise( function (resolve, reject) {
 
-		let client = new XMLHttpRequest();
+		let xhr = new XMLHttpRequest();
 		let uri = url;
 
-		if (args && (method === 'POST' || method === 'GET')) {
-			uri += '?' + Object.keys(args)
-						.map(key => encodeURIComponent(key) + '=' + encodeURIComponent(args[key]))
+		if (method === 'GET') {
+			uri += '?' + Object.keys(data)
+						.map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
 						.join('&');
 		}
 
-		client.open(method, uri);
-		client.send();
+		xhr.open(method, uri);
+		xhr.send(method === 'GET' ? data : null);
 
-		client.onload = function () {
+		xhr.onload = function () {
 			if (this.status >= 200 && this.status < 300) {
 				resolve(this.response);
 			} else {
 				reject(this.statusText);
 			}
 		};
-		client.onerror = function () {
+		xhr.onerror = function () {
 			reject(this.statusText);
 		};
 	});
@@ -32,17 +32,17 @@ function ajax(method, url, args) {
 export default function request(url){
 
 	return {
-		'get' : function(args) {
-			return ajax('GET', url, args);
+		'get' : function(data) {
+			return ajax('GET', url, data);
 		},
-		'post' : function(args) {
-			return ajax('POST', url, args);
+		'post' : function(data) {
+			return ajax('POST', url, data);
 		},
-		'put' : function(args) {
-			return ajax('PUT', url, args);
+		'put' : function(data) {
+			return ajax('PUT', url, data);
 		},
-		'delete' : function(args) {
-			return ajax('DELETE', url, args);
+		'delete' : function(data) {
+			return ajax('DELETE', url, data);
 		}
 	};
 };
