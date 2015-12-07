@@ -1,6 +1,6 @@
 import path from 'path';
 
-let configs = {
+let config = {
 	permissions: {
 		'user': 'Utilisateur',
 		'admin': 'Administrateur'
@@ -9,9 +9,12 @@ let configs = {
 }
 
 // Paths
-configs.path = {};
-configs.path.assets = path.join(__dirname,'../../assets/')
-configs.path.views = path.join(configs.path.assets,'views/');
-configs.path.dist = path.join(configs.path.assets,'dist');
+config.path = {};
+config.path.root = path.join(__dirname, '../../')
+config.path.assets = path.join(config.path.root, 'assets/');
+config.path.views = path.join(config.path.assets, 'views/');
+config.path.dist = path.join(config.path.assets, 'dist');
+config.path.uploads = path.join(config.path.assets, 'uploads/');
+config.path.images = path.join(config.path.uploads, 'images/');
 
-export default configs;
+export default config;
