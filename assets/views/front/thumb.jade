@@ -1,9 +1,22 @@
-div.thumb
+div.thumb(
+		data-filename=filename
+	)
 	figure
 		img(
 			src=src
-			title=title
-			)
-	div.controls
-		button upload
-		button cancel
+			alt=filename
+		)
+	div.check
+		label
+			input(
+				type="radio"
+				name="upload_#{index}"
+				value="valid"
+				checked)
+			span valid
+		label
+			input(
+				type="radio"
+				name="upload_#{index}"
+				value="cancel")
+			span cancel
