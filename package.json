@@ -18,7 +18,6 @@
     "express-session": "^1.11.3",
     "jade": "^1.11.0",
     "mongoose": "^4.1.7",
-    "multer": "^1.1.0",
     "node-uuid": "^1.4.3",
     "nodemailer": "^1.10.0",
     "passport": "^0.3.0",

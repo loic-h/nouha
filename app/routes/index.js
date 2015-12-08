@@ -1,40 +1,36 @@
 import express from 'express';
 import {ensureAuthenticated} from '../auth';
-import multer from 'multer';
+import Busboy from 'busboy';
 import config from '../config';
+import {inspect} from 'util';
+import fs from 'fs';
+import path from 'path';
 
 const router = express.Router();
-const upload = multer({
-	storage: multer.diskStorage({
-		destination: function (req, file, done) {
-			done(null, config.path.images);
-		},
-		filename: function (req, file, done) {
-			done(null, `${file.fieldname}-${Date.now()}`);
-		}
-	})
-});
+
 
 router.get('/', ensureAuthenticated, function (req, res) {
 	res.render('index');
 });
 
-router.post('/upload',
-	upload.fields([
-		{name: 'images'}
-	]),
-function (req, res) {
-	const images = req.images;
-	console.log(images);
-	res.send('{"post":"prout"}');
-});
+router.post('/upload', function (req, res) {
 
-router.get('/upload', function (req, res) {
-	let data = req.query;
-	console.log('get');
-	console.log(data);
-	res.send('{"get":"prout"}');
-});
+	let bboy = new Busboy({ headers: req.headers });
 
+	bboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+		if(fieldname !== 'images' && mimetype !== 'image/jpeg') {
+			return;
+		}
+
+		let to = path.join(config.path.images, filename);
+		file.pipe(fs.createWriteStream(to));
+	});
+
+	bboy.on('finish', function () {
+		res.send('finish');
+	});
+
+	req.pipe(bboy);
+});
 
 export default router;
