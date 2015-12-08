@@ -4,19 +4,14 @@ import {target, getParent} from '@loiic/js-utils/dom';
 
 let container = document.query('.upload');
 let containerGallery = document.query('.gallery');
-let fileInput;
-let form;
-let files;
+let fileInput = null;
+let form = null;
+let files = [];
 const hasFileSystem = window.File && window.FileReader && window.FileList && window.Blob;
 const hasFormData = !! window.FormData;
 
-request('/upload')
-		.post({'caca': 'prout'})
-		.then(success)
-		.catch(error);
-
 if (container && hasFileSystem) {
-	// init();
+	init();
 }
 
 function init() {
@@ -27,7 +22,7 @@ function init() {
 }
 
 function onChange(event) {
-	files = event.target.images || event.dataTransfer.images;
+	files = event.target.files || event.dataTransfer.files;
 	for(let i = 0, f; f = files[i]; i++) {
 		parseFile(i, f);
 	}
@@ -53,7 +48,7 @@ function onSubmit(event) {
 		let value = check.value;
 		if(value === 'valid') {
 			console.log(file);
-			formdata.append('images', file);
+			formdata.append('images', file, file.name);
 			console.log(formdata);
 		}
 	}
