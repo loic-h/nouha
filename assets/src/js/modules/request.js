@@ -12,7 +12,8 @@ function ajax(method, url, data) {
 		}
 
 		xhr.open(method, uri);
-		xhr.send(method === 'GET' ? data : null);
+		let d = method !== 'GET' ? data : null;
+		xhr.send(d);
 
 		xhr.onload = function () {
 			if (this.status >= 200 && this.status < 300) {
