@@ -1,0 +1,8 @@
+{
+	"uid": "nouha",
+	"append": true,
+	"watch": true,
+	"script": "app.js",
+	"sourceDir": "/Volumes/DATAS/Sites/nouha/nouha_com",
+	"watchDirectory": "app"
+}
