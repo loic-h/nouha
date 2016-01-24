@@ -1,4 +1,4 @@
-import request from './request';
+import request from 'superagent';
 import template from './template';
 import {target, getParent} from '@loiic/js-utils/dom';
 
@@ -47,19 +47,22 @@ function onSubmit(event) {
 		let check = form.query(`input[name=upload_${i}]:checked`);
 		let value = check.value;
 		if(value === 'valid') {
-			console.log(file);
 			formdata.append('images', file, file.name);
-			console.log(formdata);
 		}
 	}
-	request('/upload')
-		.post(formdata)
-		.then(success)
-		.catch(error);
+	request.post('/upload')
+		.send(formdata)
+		.end(success);
 }
 
-function success(data) {
-	console.log(data);
+function success(err, data) {
+	if(err) {
+		console.log('error');
+		throw err;
+	}
+	else {
+		console.log(data);
+	}
 }
 
 function error(data) {
