@@ -41,7 +41,7 @@ function parseFile(index, file) {
 
 function onSubmit(event) {
 	event.preventDefault();
-	let formdata = new FormData();
+	let formdata = new FormData(form);
 	for(let i = 0; i < files.length; i++) {
 		let file = files[i];
 		let check = form.query(`input[name=upload_${i}]:checked`);
