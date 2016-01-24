@@ -6,11 +6,15 @@ import {inspect} from 'util';
 import fs from 'fs';
 import path from 'path';
 import Image from '../models/image';
+import React from 'react';
+import ReactDOMServer from 'react-dom/server'
+import ImagesComponent from '../../assets/src/js/modules/images/components/app';
 
 const router = express.Router();
 
-router.get('/', ensureAuthenticated, function (req, res) {
-	res.render('index');
+router.get('/', /*ensureAuthenticated,*/ function (req, res) {
+	const html = ReactDOMServer.renderToString(<ImagesComponent />);
+	res.render('index', {images: html});
 });
 
 router.post('/upload', function (req, res) {
