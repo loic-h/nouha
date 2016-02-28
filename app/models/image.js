@@ -12,7 +12,7 @@ let ImageSchema = new mongoose.Schema({
 	},
 	_user: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'User'
+		ref: 'Users'
 	},
 	hash: String
 });
@@ -53,4 +53,4 @@ ImageSchema.pre('save', function(next) {
 	next();
 });
 
-export default mongoose.model('images', ImageSchema);
+export default mongoose.model('Images', ImageSchema);
