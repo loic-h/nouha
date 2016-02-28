@@ -17,8 +17,6 @@ passport.use('local-login', new LocalStrategy({
 		passwordField: 'password'
 	},
 	function (email, password, done) {
-		email = 'loic.hamet@gmail.com';
-		password = '1234';
 		User.findOne({ email: email }, function (err, user) {
 			if (err) {
 				return done(err);
