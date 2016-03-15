@@ -41,13 +41,13 @@ function parseFile(index, file) {
 
 function onSubmit(event) {
 	event.preventDefault();
-	let formdata = new FormData(form);
+	let formdata = new FormData();
 	for(let i = 0; i < files.length; i++) {
 		let file = files[i];
 		let check = form.query(`input[name=upload_${i}]:checked`);
 		let value = check.value;
 		if(value === 'valid') {
-			formdata.append('images', file, file.name);
+			formdata.append('images', file);
 		}
 	}
 	request.post('/upload')

@@ -12,9 +12,13 @@ import ImagesComponent from '../../assets/src/js/modules/images/components/app';
 
 const router = express.Router();
 
-router.get('/', /*ensureAuthenticated,*/ function (req, res) {
-	const html = ReactDOMServer.renderToString(<ImagesComponent />);
-	res.render('index', {images: html});
+router.get('/', ensureAuthenticated, function (req, res) {
+	Image.find({})
+		.populate('_user')
+		.exec((err, images) => {
+			const html = ReactDOMServer.renderToString(<ImagesComponent items={images} />);
+			res.render('index', {images: html});
+		});
 });
 
 router.post('/upload', function (req, res) {
@@ -31,7 +35,6 @@ router.post('/upload', function (req, res) {
 			_user: req.user._id
 		});
 		image.getHash();
-
 		file.on('end', () => {
 			image.save(function(err) {
 				if(err) {
@@ -42,6 +45,7 @@ router.post('/upload', function (req, res) {
 		const to = path.join(config.path.images, image.getHashedName());
 		file.pipe(fs.createWriteStream(to));
 
+		file.on('data', () => {});
 	});
 
 	bboy.on('finish', function () {
