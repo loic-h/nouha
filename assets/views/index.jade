@@ -3,7 +3,10 @@ extends ./layout.jade
 block content
 	h1 index
 	div#images
-		|#{images}
+		each image in images
+			img(
+				src=image.src
+			)
 	div.upload
 		form(
 			action="/upload"
@@ -14,6 +17,7 @@ block content
 				type="file"
 				name="images"
 				multiple="multiple"
+				value=""
 			)
 			input(
 				type="submit"

@@ -26,7 +26,8 @@
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "superagent": "^1.7.1",
-    "validator": "^4.0.6"
+    "validator": "^4.0.6",
+    "yarm": "^0.4.0"
   },
   "devDependencies": {
     "babel-eslint": "^4.1.3",

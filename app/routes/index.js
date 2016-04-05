@@ -6,9 +6,6 @@ import {inspect} from 'util';
 import fs from 'fs';
 import path from 'path';
 import Image from '../models/image';
-import React from 'react';
-import ReactDOMServer from 'react-dom/server'
-import ImagesComponent from '../../assets/src/js/modules/images/components/app';
 
 const router = express.Router();
 
@@ -16,8 +13,9 @@ router.get('/', ensureAuthenticated, function (req, res) {
 	Image.find({})
 		.populate('_user')
 		.exec((err, images) => {
-			const html = ReactDOMServer.renderToString(<ImagesComponent items={images} />);
-			res.render('index', {images: html});
+			const data = images.map(formatImage);
+			console.log(data);
+			res.render('index', {images: images});
 		});
 });
 
@@ -54,5 +52,14 @@ router.post('/upload', function (req, res) {
 
 	req.pipe(bboy);
 });
+
+function formatImage(data) {
+	const path = config.path.images;
+	const name = data.name;
+	const src = path + src;
+	return {
+		path, name, src
+	}
+}
 
 export default router;
